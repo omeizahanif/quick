@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 //store each dependencies in variables for use
 const express = require('express'); //a web framework for routing
 const morgan = require('morgan');// a logger middleware
@@ -15,6 +15,7 @@ const Course = require('./public/src/models/courseModel');
 const User = require('./public/src/models/userModel');
 
 //mongoose.connect('mongodb://localhost/nouquick');
+require('dotenv').config({path: path.join(__dirname, '.env')});
 (function db () {
     try {
         mongoose.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true } );
