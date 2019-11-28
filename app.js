@@ -18,7 +18,7 @@ const User = require('./public/src/models/userModel');
 require('dotenv').config({path: path.join(__dirname, '.env')});
 (function db () {
     try {
-        mongoose.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true } );
+        mongoose.connect('mongodb://iyinoluwa:iyinoluwa1@ds037611.mlab.com:37611/nouquick', { useNewUrlParser: true } );
     } catch (error) {
         console.log("Error! : ", error);
     }
