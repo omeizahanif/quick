@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 //store each dependencies in variables for use
 const express = require('express'); //a web framework for routing
 const morgan = require('morgan');// a logger middleware
@@ -17,9 +17,9 @@ const User = require('./public/src/models/userModel');
 //mongoose.connect('mongodb://localhost/nouquick');
 (function db () {
     try {
-        return mongoose.connect('mongodb://iyinoluwa:iyinoluwa1@ds037611.mlab.com:37611/nouquick');
+        return mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/nouquick');
     } catch (error) {
-        console.error();
+        console.log("Error! : ", error);
     }
 })();
 
