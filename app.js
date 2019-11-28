@@ -17,7 +17,7 @@ const User = require('./public/src/models/userModel');
 //mongoose.connect('mongodb://localhost/nouquick');
 (function db () {
     try {
-        return mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/nouquick');
+        return mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/nouquick');
     } catch (error) {
         console.log("Error! : ", error);
     }
