@@ -1,3 +1,4 @@
+require('dotenv').config()
 //store each dependencies in variables for use
 const express = require('express'); //a web framework for routing
 const morgan = require('morgan'); // a logger middleware
@@ -14,7 +15,7 @@ const Course = require('./public/src/models/courseModel');
 const User = require('./public/src/models/userModel');
 
 const app = express();
-require('dotenv').config()
+
 const port = process.env.PORT || 80;
 const adminRouter = require('./public/src/routes/adminRoutes');
 const studentRouter = require('./public/src/routes/studentRoutes');
@@ -49,11 +50,8 @@ app.use('/admin', adminRouter);
 app.use('/', authRouter);
 
 //server setup
-const uri = `mongodb+srv://${process.env.DB_HOST}`;
+const uri = `mongodb+srv://${process.env.DATABASE}`;
 const options = {
-  user: process.env.DB_USER,
-  pass: process.env.DB_PASS,
-  dbName: process.env.DB_NAME,
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
