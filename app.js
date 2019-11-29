@@ -50,8 +50,11 @@ app.use('/admin', adminRouter);
 app.use('/', authRouter);
 
 //server setup
-const uri = `mongodb+srv://${process.env.DATABASE}`;
+const uri = `mongodb+srv://${process.env.DB_HOST}`;
 const options = {
+  user: process.env.DB_USER,
+  pass: process.env.DB_PASS,
+  dbName: process.env.DB_NAME,
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
