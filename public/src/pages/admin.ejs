@@ -53,11 +53,12 @@
      <section id="results" class="admin-content">
         <%for(let i = 0; i < results.length; i++){%>
           <article class="student-profile">
-              <p><%=results[i].code%></p>
+              <p><%=results[i].matric%></p>
               <%results[i].score.forEach(function(scr){%>
               <div class="result-block">
-                <span><%=scr.matric%></span>
-                <span><%=scr.status%></span>
+                <span><%=scr.code%></span>
+                <span><%=scr.finalTest%></span>
+                <span><%=scr.finalExam%></span>
                 <form action="/admin/results/<%=scr._id%>?_method=DELETE" 
                   onsubmit="return confirm('Do you want to delete this result?');" 
                   method="POST">
