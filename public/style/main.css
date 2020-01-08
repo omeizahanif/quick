@@ -10,6 +10,9 @@
     --title: #004d40;
 }
 
+button, a, i {
+    cursor: pointer;
+}
 
 /* nav layout */
 .nav-extended {

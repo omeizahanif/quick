@@ -15,7 +15,7 @@ adminRouter.route('/').get(isLoggedIn, (req, res) => {
             let studentData = await Student.find({}, (err, students) => {
                 err ? console.log(err) : students;
             });
-            console.log(studentData);
+
             let resultData = await Result.find({}, (err, results) => {
                 err ? console.log(err) : results;
             });
@@ -70,15 +70,35 @@ adminRouter.route('/new-result').get(isLoggedIn, (req, res) => {
 
 
 adminRouter.route('/new-result').post(isLoggedIn, (req, res) => {
-    let {score, code} = req.body;
-    let result = {score, code};
-    Result.findOne({code : code}, (err, found) => {
+    let {matric, score} = req.body;
+    let test = calcTest(score.tma1, score.tma2, score.tma3, score.tma4);
+    let exam = calcExam(Number(score.exam), Number(score.numQuestions));
+    let total = test + exam;
+    let grade = calcStudentGrade(total);
+    score.finalTest = test;
+    score.finalExam = exam;
+    score.total = total;
+    score.finalGrade = grade;
+    //console.log({matric, score});
+
+    Result.findOne({matric : matric}, (err, found) => {
         if (found == null) {
-            Result.create(result, (err, result) => {
+            Result.create({matric, score}, (err, result) => {
                 err ? console.log(err) : res.redirect('/admin');
             })
         } else {
-            found.score.push({matric: score.matric, status: score.status});
+            found.score.push({code: score.code,
+            tma1: score.tma1,
+            tma2: score.tma2,
+            tma3: score.tma3,
+            tma4: score.tma4,
+            exam: score.exam,
+            numQuestions: score.numQuestions,
+            finalTest: score.finalTest,
+            finalExam: score.finalExam,
+            total: score.total,
+            finalGrade: score.finalGrade
+        });
             found.save();
             res.redirect('/admin');
         }
@@ -172,7 +192,39 @@ function isLoggedIn(req, res, next) {
         res.redirect('/'); 
 }
 
+function calcTest(tma1, tma2, tma3, tma4) {
+    tma1 = parseFloat(tma1); tma2 = parseFloat(tma2);
+    tma3 = parseFloat(tma3); tma4 = parseFloat(tma4);
+    let minimum = Math.min(tma1, tma2, tma3, tma4);
+    let tmaTotal = (tma1 + tma2 + tma3 + tma4) - minimum;
+    return tmaTotal;
+}
 
+function calcExam(exam, numQuestions) {  
+    let examTotal = (exam * 70) / numQuestions;
+    return parseFloat(examTotal.toFixed(2));
+}
+
+
+function calcStudentGrade(total) {
+    let grade = '', score = total;
+  
+    if (score >= 70 && score <= 100) {
+      grade = 'A';
+    } else if (score >= 60 && score <= 69) {
+      grade = 'B';
+    } else if (score >= 50 && score <= 59) {
+      grade = 'C';
+    } else if (score >= 45 && score <= 49) {
+      grade = 'D';
+    } else if (score >= 40 && score <= 44) {
+      grade = 'E';
+    } else {
+      grade = 'F';
+    }
+  
+    return grade;
+  }
 
 
 module.exports = adminRouter;
