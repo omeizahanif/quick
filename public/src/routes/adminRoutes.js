@@ -75,6 +75,7 @@ adminRouter.route('/new-result').post(isLoggedIn, (req, res) => {
     let exam = calcExam(Number(score.exam), Number(score.numQuestions));
     let total = test + exam;
     let grade = calcStudentGrade(total);
+    let gpa = 0;
     score.finalTest = test;
     score.finalExam = exam;
     score.total = total;
@@ -88,6 +89,7 @@ adminRouter.route('/new-result').post(isLoggedIn, (req, res) => {
             })
         } else {
             found.score.push({code: score.code,
+            units: score.units,
             tma1: score.tma1,
             tma2: score.tma2,
             tma3: score.tma3,
@@ -99,7 +101,12 @@ adminRouter.route('/new-result').post(isLoggedIn, (req, res) => {
             total: score.total,
             finalGrade: score.finalGrade
         });
+            //let mappedGrade = found.score.map(el => el.finalGrade);
+            //let mappedUnits = found.score.map(el => el.units);
+            gpa = calcGPA(found.score);
+            found.gpa = gpa;
             found.save();
+            //console.log('g:' + mappedGrade, 'u: ' + mappedUnits);
             res.redirect('/admin');
         }
     });
@@ -145,7 +152,7 @@ adminRouter.route('/results/:id').delete(isLoggedIn, (req, res) => {
             console.log(err);
         } else {
             target = found.score.id(req.params.id);
-            console.log(target);
+
             target.remove();
             found.save((err) => {
                 err ? console.log(err) : res.redirect('/admin');
@@ -210,21 +217,35 @@ function calcStudentGrade(total) {
     let grade = '', score = total;
   
     if (score >= 70 && score <= 100) {
-      grade = 'A';
+      grade = 5;
     } else if (score >= 60 && score <= 69) {
-      grade = 'B';
+      grade = 4;
     } else if (score >= 50 && score <= 59) {
-      grade = 'C';
+      grade = 3;
     } else if (score >= 45 && score <= 49) {
-      grade = 'D';
+      grade = 2;
     } else if (score >= 40 && score <= 44) {
-      grade = 'E';
+      grade = 1;
     } else {
-      grade = 'F';
+      grade = 0;
     }
   
     return grade;
   }
 
+function calcGPA(scoreArray) {
+    let unitArray = [];
+    let totalUnits = 0;
+    let totalProduct = 0;
 
+    let transitionArray = scoreArray.map(score => {
+        let product = score.finalGrade * score.units;
+        return product;
+    });
+    totalProduct = transitionArray.reduce((acc, curr) => acc + curr);
+    unitArray = scoreArray.map(score => score.units);
+    totalUnits = unitArray.reduce((acc, curr) => curr + acc);
+    
+    return (totalProduct / totalUnits).toFixed(2);
+}
 module.exports = adminRouter;
