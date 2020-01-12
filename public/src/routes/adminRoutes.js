@@ -152,8 +152,10 @@ adminRouter.route('/results/:id').delete(isLoggedIn, (req, res) => {
             console.log(err);
         } else {
             target = found.score.id(req.params.id);
-
             target.remove();
+            gpa = calcGPA(found.score);
+            found.gpa = gpa;
+
             found.save((err) => {
                 err ? console.log(err) : res.redirect('/admin');
             })
