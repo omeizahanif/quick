@@ -35,29 +35,34 @@
                 </div>     
                 <div class="input-field">
                   <%for(let i = 0; i < courses.length; i++){%>
-                  <label for="result"><%=courses[i].code%></label>
-                  <input type="radio" id="result" name="score[code]" value="<%=courses[i].code%>">
+                  <label for="code"><%=courses[i].code%></label>
+                  <input type="radio" id="code" name="score[code]" value="<%=courses[i].code%>" required>
                   <%}%>
                 </div>
                 <div class="input-field">
+                  <label for="units">Course Units</label>
+                  <input type="number" id="units" name="score[units]" min="1" max="6" value="1"
+                    required />
+                </div>
+                <div class="input-field">
                     <label for="tma1">TMA 1</label>
-                    <input type="number" id="tma1" name="score[tma1]" placeholder="e.g. 30" min="0" max="10" required>
+                    <input type="number" id="tma1" name="score[tma1]" placeholder="e.g. 30" min="0" max="10" step="any" required>
                 </div>
                 <div class="input-field">
                   <label for="tma2">TMA 2</label>
-                  <input type="number" id="tma2" name="score[tma2]" placeholder="e.g. 5" min="0" max="10" required>
+                  <input type="number" id="tma2" name="score[tma2]" placeholder="e.g. 5" min="0" max="10" step="any" required>
                 </div>
                 <div class="input-field">
                   <label for="tma3">TMA 3</label>
-                  <input type="number" id="tma3" name="score[tma3]" placeholder="e.g. 5" min="0" max="10" required>
+                  <input type="number" id="tma3" name="score[tma3]" placeholder="e.g. 5" min="0" max="10" step="any" required>
                 </div>
                 <div class="input-field">
                   <label for="tma4">TMA 4</label>
-                  <input type="number" id="tma4" name="score[tma4]" placeholder="e.g. 5" min="0" max="10" required>
+                  <input type="number" id="tma4" name="score[tma4]" placeholder="e.g. 5" min="0" max="10" step="any" required>
                 </div>
                 <div class="input-field">
                   <label for="exam">Exam Score</label>
-                  <input type="number" id="exam" name="score[exam]" placeholder="e.g. 120" min="0" max="150" required>
+                  <input type="number" id="exam" name="score[exam]" placeholder="e.g. 120" min="0" max="150" step="any" required>
                 </div>
                 <div class="input-field">
                   <label for="questions">Number of Exam Questions</label>

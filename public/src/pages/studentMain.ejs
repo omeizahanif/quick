@@ -43,6 +43,9 @@
    <main>
         <section id="students" class="admin-content">
           <div>
+            <h2>PERSONAL INFORMATION</h2>
+          </div>
+          <div>
               <span class="labels">Name:</span>
               <span><%=profile.firstName%></span>
               <span><%=profile.lastName%></span>
@@ -83,21 +86,43 @@
         </section>     
      
         <section id="results" class="admin-content">
+            <div>
+            <h2>FINAL RESULTS</h2>
+            <p>GPA: <span><%=results.gpa%></span></p>
+          </div>
           <div>
               <table>
                 <thead>
                   <td>Code</td>
-                  <td>Status</td>
+                  <td>Final Grade</td>
                 </thead>
-                <%results.forEach(function(result){%>
-                  <%let studentArray = result.score.filter((score) => score.matric == profile.matric)%>
-                        <tr>
-                          <td><%=result.code%></td>
-                          <%studentArray.map(student=> {%>
-                          <td><%=student.status || 'Not Offered'%></td>
-                          <%})%>
-                        </tr>         
-                <%})%>
+                
+                <tbody>
+                  <%results.score.map(score => {%>
+                    
+                  <tr>  
+                    <td><%=score.code%></td>
+                    <%let grade = ''%>
+                    <%if(score.finalGrade == 5) {%>
+                    <%grade = 'A'%>
+                    <%} else if (score.finalGrade == 4) {%>
+                    <%grade = 'B'%>
+                    <%} else if (score.finalGrade == 3) {%>
+                    <%grade = 'C'%>
+                    <%} else if (score.finalGrade == 2) {%>
+                    <%grade = 'D'%>
+                    <%} else if (score.finalGrade == 1) {%>
+                    <%grade = 'E'%>
+                    <%} else {%>
+                    <%grade = 'F'%>
+                    <%}%>
+                    <td><%=`${score.finalGrade} (${grade})` || 'Not Offered'%></td>
+                    
+                  </tr> 
+                  
+                  <%})%>
+                </tbody>
+                                
               </table>
           </div>   
         </section>

@@ -40,6 +40,9 @@
    </nav>
    <main>
      <section id="students" class="admin-content">
+        <div>
+            <h2>STUDENTS' PROFILE</h2>
+        </div>
        <%for(let i = 0; i < profiles.length; i++){%>
           <article class="student-profile">
               <span><%=i+1%></span>
@@ -51,14 +54,19 @@
      </section>
      
      <section id="results" class="admin-content">
+        <div>
+            <h2>FINAL RESULTS</h2>
+        </div>
         <%for(let i = 0; i < results.length; i++){%>
           <article class="student-profile">
               <p><%=results[i].matric%></p>
+              <p>GPA: <%=results[i].gpa%></p>
               <%results[i].score.forEach(function(scr){%>
               <div class="result-block">
                 <span><%=scr.code%></span>
                 <span><%=scr.finalTest%></span>
                 <span><%=scr.finalExam%></span>
+                
                 <form action="/admin/results/<%=scr._id%>?_method=DELETE" 
                   onsubmit="return confirm('Do you want to delete this result?');" 
                   method="POST">
@@ -71,6 +79,9 @@
      </section>
 
      <section id="courses" class="admin-content">
+        <div>
+            <h2>COURSES</h2>
+        </div>
         <%for(let i = 0; i < courses.length; i++){%>
           <article class="student-profile">
               <p><%=courses[i].code%></p>
