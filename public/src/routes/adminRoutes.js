@@ -30,6 +30,7 @@ adminRouter.route('/').get(isLoggedIn, (req, res) => {
         }
         
     })()
+
 });
 
 adminRouter.route('/new-course').get(isLoggedIn, (req, res) => {
@@ -106,8 +107,9 @@ adminRouter.route('/new-result').post(isLoggedIn, (req, res) => {
             gpa = calcGPA(found.score);
             found.gpa = gpa;
             found.save();
-            //console.log('g:' + mappedGrade, 'u: ' + mappedUnits);
             res.redirect('/admin');
+            //console.log('g:' + mappedGrade, 'u: ' + mappedUnits);
+            
         }
     });
     
@@ -155,7 +157,6 @@ adminRouter.route('/results/:id').delete(isLoggedIn, (req, res) => {
             target.remove();
             gpa = calcGPA(found.score);
             found.gpa = gpa;
-
             found.save((err) => {
                 err ? console.log(err) : res.redirect('/admin');
             })
