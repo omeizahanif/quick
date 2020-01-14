@@ -9,27 +9,18 @@ const User = require('../models/userModel');
 const session = require('express-session');
 
 
-adminRouter.route('/').get(isLoggedIn, (req, res) => {
-    (async function fetchData() {
+adminRouter.route('/').get(isLoggedIn, async (req, res) => {
         try{
-            let studentData = await Student.find({}, (err, students) => {
-                err ? console.log(err) : students;
-            });
+            let studentData = await Student.find({});
 
-            let resultData = await Result.find({}, (err, results) => {
-                err ? console.log(err) : results;
-            });
+            let resultData = await Result.find({});
 
-            let courseData = await Course.find({}, (err, courses) => {
-                err ? console.log(err) : courses;
-            })
+            let courseData = await Course.find({});
     
             res.render('admin', {profiles: studentData, results: resultData, courses: courseData});
         } catch(err) {
             console.log(err);
         }
-        
-    })()
 
 });
 
@@ -37,10 +28,28 @@ adminRouter.route('/new-course').get(isLoggedIn, (req, res) => {
     res.render('newCourse');
 });
 
-adminRouter.route('/new-course').post(isLoggedIn, (req, res) => {
+adminRouter.route('/new-course').post(isLoggedIn, async (req, res) => {
     let {department, semester, code, title, units} = req.body;
     let newCourse = {department, semester, code, title, units};
-    Course.findOne({
+    try {
+            let findCourse = await Course.findOne({department: department,
+                semester: semester,
+                code: code, title: title,
+                units: units});
+
+            if (findCourse == null) {
+               const course = new Course(newCourse);
+               course.save();
+            } else {
+                res.send('This course already exists');
+            }
+
+            res.redirect('/admin')
+
+    } catch(e) {
+        console.log(e);
+    }
+    /*Course.findOne({
         department: department,
         semester: semester,
         code: code, title: title,
@@ -53,7 +62,7 @@ adminRouter.route('/new-course').post(isLoggedIn, (req, res) => {
         } else {
             res.send('this course already exists');
         }
-    });
+    });*/
 })
 
 adminRouter.route('/new-student').get(isLoggedIn, (req, res) => {
@@ -70,48 +79,50 @@ adminRouter.route('/new-result').get(isLoggedIn, (req, res) => {
 
 
 
-adminRouter.route('/new-result').post(isLoggedIn, (req, res) => {
-    let {matric, score} = req.body;
-    let test = calcTest(score.tma1, score.tma2, score.tma3, score.tma4);
-    let exam = calcExam(Number(score.exam), Number(score.numQuestions));
-    let total = test + exam;
-    let grade = calcStudentGrade(total);
-    let gpa = 0;
-    score.finalTest = test;
-    score.finalExam = exam;
-    score.total = total;
-    score.finalGrade = grade;
-    //console.log({matric, score});
+adminRouter.route('/new-result').post(isLoggedIn, async (req, res) => {
+    try {
+        let {matric, score} = req.body;
+        let test = calcTest(score.tma1, score.tma2, score.tma3, score.tma4);
+        let exam = calcExam(Number(score.exam), Number(score.numQuestions));
+        let total = test + exam;
+        let grade = calcStudentGrade(total);
+        let gpa = 0;
+        score.finalTest = test;
+        score.finalExam = exam;
+        score.total = total;
+        score.finalGrade = grade;
 
-    Result.findOne({matric : matric}, (err, found) => {
-        if (found == null) {
-            Result.create({matric, score}, (err, result) => {
-                err ? console.log(err) : res.redirect('/admin');
-            })
-        } else {
+        let found = await Result.findOne({matric : matric});
+        if (found) {     
             found.score.push({code: score.code,
-            units: score.units,
-            tma1: score.tma1,
-            tma2: score.tma2,
-            tma3: score.tma3,
-            tma4: score.tma4,
-            exam: score.exam,
-            numQuestions: score.numQuestions,
-            finalTest: score.finalTest,
-            finalExam: score.finalExam,
-            total: score.total,
-            finalGrade: score.finalGrade
-        });
-            //let mappedGrade = found.score.map(el => el.finalGrade);
-            //let mappedUnits = found.score.map(el => el.units);
-            gpa = calcGPA(found.score);
-            found.gpa = gpa;
-            found.save();
-            res.redirect('/admin');
-            //console.log('g:' + mappedGrade, 'u: ' + mappedUnits);
+                units: score.units,
+                tma1: score.tma1,
+                tma2: score.tma2,
+                tma3: score.tma3,
+                tma4: score.tma4,
+                exam: score.exam,
+                numQuestions: score.numQuestions,
+                finalTest: score.finalTest,
+                finalExam: score.finalExam,
+                total: score.total,
+                finalGrade: score.finalGrade
+            });
+                gpa = calcGPA(found.score);
+                found.gpa = gpa;
+                found.save();
             
+        } else {
+            const result = new Result({matric, score});
+            result.save();
         }
-    });
+            res.redirect('/admin');
+
+    } catch(err) {
+        console.log(err);
+        res.send('Result was not captured. Try Again');
+    }
+    
+    //console.log({matric, score});
     
 });
 
@@ -128,40 +139,35 @@ adminRouter.route('/new-student').post(isLoggedIn, (req, res) => {
     });
 });
 
-adminRouter.route('/students/:id').get(isLoggedIn, (req, res) => {
-    (async function fetchProfile() {
+adminRouter.route('/students/:id').get(isLoggedIn, async (req, res) => {
         try {
             
-            let studentData = await Student.findById(req.params.id, (err, data) => {
-                err ? console.log(err) : data;
-            });
+            let studentData = await Student.findById(req.params.id);
 
-            let courseData = await Course.find({}, (err, data) => {
-                err ? console.log(err) : data;
-            })
+            let courseData = await Course.find({});
+
             res.render('profile', { profile: studentData, courses: courseData});
 
         } catch(err) {
             console.log(err);
         }
-    })()
+
 });
 
-adminRouter.route('/results/:id').delete(isLoggedIn, (req, res) => {
-    let target;
-    Result.findOne({ 'score._id' : req.params.id }, (err, found) => {
-        if (found == null) {
+adminRouter.route('/results/:id').delete(isLoggedIn, async (req, res) => {
+    try {
+        let target;
+        let found = await Result.findOne({ 'score._id' : req.params.id });
+        target = await found.score.id(req.params.id);
+        target.remove();
+        let gpa = calcGPA(found.score);
+        found.gpa = gpa;
+        found.save();
+        res.redirect('/admin');
+    } catch(err) {
             console.log(err);
-        } else {
-            target = found.score.id(req.params.id);
-            target.remove();
-            gpa = calcGPA(found.score);
-            found.gpa = gpa;
-            found.save((err) => {
-                err ? console.log(err) : res.redirect('/admin');
-            })
-        }
-    })
+    }
+        
 });
 
 adminRouter.route('/courses/:id').delete(isLoggedIn, (req, res) => {
