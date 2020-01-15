@@ -1,5 +1,5 @@
 const staticCacheName = 'site-static-v7';
-const dynamicCacheName = 'site-dynamic-v2';
+//const dynamicCacheName = 'site-dynamic-v2';
 const assets = [
     '/',
     '/app.js',
@@ -38,18 +38,18 @@ self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(keys => {
             return Promise.all(keys
-                .filter(key => key !== staticCacheName && key !== dynamicCacheName)
+                .filter(key => key !== staticCacheName)
                 .map(key => caches.delete(key))
             )
         })
     );
 });
 
-self.addEventListener('fetch', event => {
+/*self.addEventListener('fetch', event => {
     if (event.request.method !== 'GET') {
         /* If we don't block the event as shown below, then the request will go to
            the network as usual.
-        */
+        
         console.log('WORKER: fetch event ignored.', event.request.method, event.request.url);
         return;
       }
@@ -62,11 +62,11 @@ self.addEventListener('fetch', event => {
                     return fetchRes;
                 })
             })
-        }).catch((e) => {
-            console.error();
-           /* if(event.request.url.indexOf('.ejs') > -1) {
+        }).catch(() => {
+    
+            if(event.request.url.indexOf('.ejs') > -1) {
                return caches.match('/public/src/pages/fallback.ejs')
-            }*/
+            }
         })
     );
-});
+});*/
