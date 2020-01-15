@@ -59,8 +59,14 @@
         </div>
         <%for(let i = 0; i < results.length; i++){%>
           <article class="student-profile">
-              <p><%=results[i].matric%></p>
+              <p>Matric Number: <%=results[i].matric%></p>
               <p>GPA: <%=results[i].gpa%></p>
+              <div>
+                <span>Course Code</span>
+                <span>Average TMA</span>
+                <span>Exam Score</span>
+                <span>***</span>
+              </div>
               <%results[i].score.forEach(function(scr){%>
               <div class="result-block">
                 <span><%=scr.code%></span>
@@ -82,10 +88,17 @@
         <div class='section-title'>
             <h2>COURSES</h2>
         </div>
+        <div class="content-title">
+                <span>Code</span>
+                <span>Course Title</span>
+                <span>Unit</span>
+                <span>***</span>
+        </div>
         <%for(let i = 0; i < courses.length; i++){%>
           <article class="student-profile">
-              <p><%=courses[i].code%></p>
+              
               <div>
+                <span><%=courses[i].code%></span>
                 <span><%=courses[i].title%></span>
                 <span><%=courses[i].units%></span>
                 <form action="/admin/courses/<%=courses[i]._id%>?_method=DELETE" 
