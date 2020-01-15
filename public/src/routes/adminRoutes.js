@@ -170,6 +170,13 @@ adminRouter.route('/results/:id').delete(isLoggedIn, async (req, res) => {
         
 });
 
+adminRouter.route('/results/profile/:id').delete(isLoggedIn, async (req, res) => {
+    Result.findByIdAndDelete(req.params.id, (err) => {
+        err ? console.log(err) : res.redirect('/admin');
+    })
+        
+});
+
 adminRouter.route('/courses/:id').delete(isLoggedIn, (req, res) => {
     Course.findByIdAndDelete(req.params.id, err => {
         err ? console.log(err) : res.redirect('/admin');

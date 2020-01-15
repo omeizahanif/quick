@@ -59,7 +59,15 @@
         </div>
         <%for(let i = 0; i < results.length; i++){%>
           <article class="student-profile">
+          <div class="content-title">
               <p>Matric Number: <%=results[i].matric%></p>
+              <form action="/admin/results/profile/<%=results[i]._id%>?_method=DELETE" 
+                onsubmit="return confirm('Do you want to delete this person?');" 
+                method="POST">
+              <button><i class="fas fa-trash"></i></button>
+              </form>
+          </div>
+              
               <p>GPA: <%=results[i].gpa%></p>
               <div>
                 <span>Course Code</span>
