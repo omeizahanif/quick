@@ -5,8 +5,7 @@ const assets = [
     '/app.js',
     '/public/src/pages/login.ejs',
     '/public/index.js',
-    '/public/font/css/all.css',
-    '/public/src/pages/login.ejs'
+    '/public/font/css/all.css'
 ];
 
 //cache size limit function
@@ -63,10 +62,11 @@ self.addEventListener('fetch', event => {
                     return fetchRes;
                 })
             })
-        }).catch(() => {
-            if(event.request.url.indexOf('.ejs') > -1) {
+        }).catch((e) => {
+            console.error();
+           /* if(event.request.url.indexOf('.ejs') > -1) {
                return caches.match('/public/src/pages/fallback.ejs')
-            }
+            }*/
         })
     );
 });

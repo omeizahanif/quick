@@ -109,11 +109,11 @@ adminRouter.route('/new-result').post(isLoggedIn, async (req, res) => {
             });
                 gpa = calcGPA(found.score);
                 found.gpa = gpa;
-                found.save();
+                await found.save();
             
         } else {
             const result = new Result({matric, score});
-            result.save();
+            await result.save();
         }
             res.redirect('/admin');
 
