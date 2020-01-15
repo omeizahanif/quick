@@ -378,7 +378,7 @@ hr {
 @media only screen and (min-width: 768px) {
     .admin-content:target .student-profile,
     .admin-content:target .content-title,
-    .admin-content:target > .section-title
+    .admin-content:target .section-title
      {
         width: 50%;
     }
