@@ -157,9 +157,20 @@ main {
     padding: 0.2em;
 }
 
+.admin-content:target .content-title {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    text-align: center;
+}
+.admin-content:target .content-title > span {
+    width: 100%;
+}
+
 .admin-content:target .student-profile > p {
     width: 100%;
     text-align: center;
+    font-weight: bold;
 }
 
 .admin-content:target .student-profile > a {
@@ -192,6 +203,9 @@ main {
 
 .admin-content:target > .section-title {
     border: 1px solid var(--secondary);
+    padding: 0;
+    width: 50%;
+    margin-bottom: 5px;
 }
 
 .admin-content:target .student-profile > div {
