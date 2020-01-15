@@ -160,7 +160,7 @@ main {
 .admin-content:target .content-title {
     display: flex;
     justify-content: space-between;
-    width: 50%;
+    width: 100%;
     text-align: center;
 }
 .admin-content:target .content-title > span {
