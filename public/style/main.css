@@ -149,13 +149,10 @@ main {
     justify-content: space-between;
     flex-wrap: wrap;
     width: 100%;
+    padding: 0;
 }
 
-.admin-content:target .student-profile > div {
-    width: 100%;
-    text-align: center;
-    padding: 0.2em;
-}
+
 
 .admin-content:target .content-title {
     display: flex;
@@ -213,12 +210,13 @@ main {
     justify-content: space-between;
     color: red;
     padding: 10px;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
 }
 
 .admin-content:target .student-profile > div span {
-    margin-right: 30px;
+    margin-right: 5%;
+    margin-left: 5%;
 }
 
 .admin-content:target .student-profile > div form{
