@@ -204,7 +204,7 @@ main {
 .admin-content:target > .section-title {
     border: 1px solid var(--secondary);
     padding: 0;
-    width: 50%;
+    width: 100%;
     margin-bottom: 5px;
 }
 
@@ -376,7 +376,10 @@ hr {
 
 /**wdith style for desktops */
 @media only screen and (min-width: 768px) {
-    .admin-content:target .student-profile {
+    .admin-content:target .student-profile,
+    .admin-content:target .content-title,
+    .admin-content:target > .section-title
+     {
         width: 50%;
     }
 
